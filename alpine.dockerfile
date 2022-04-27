@@ -20,8 +20,10 @@ RUN adduser -D $APP_USER \
 RUN mkdir /var/log/$APP_USER && chown $APP_USER:$APP_USER /var/log/$APP_USER
 
 USER $APP_USER
-RUN mkdir /home/$APP_USER/app
-WORKDIR /home/$APP_USER/app
+ENV APP_USER_HOME="/home/${APP_USER}"
+ENV APP_DIR="${APP_USER_HOME}/app"
+RUN mkdir -p "${APP_DIR}"
+WORKDIR "${APP_DIR}"
 
 # allow "sub-dockerfile" to alter normal user passwd
 # https://docs.docker.com/engine/reference/builder/#onbuild
