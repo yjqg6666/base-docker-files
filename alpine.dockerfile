@@ -11,9 +11,8 @@ RUN apk add --no-cache coreutils tzdata musl-locales musl-locales-lang doas axel
 
 # https://wiki.alpinelinux.org/wiki/Setting_up_a_new_user
 RUN def_passwd=$(tr -dc 'A-Za-z0-9!@#$&*' < /dev/urandom |head -c 16) && echo $def_passwd
-ARG APP_USER=app
+ENV APP_USER=app
 ARG APP_USER_PASSWD=$def_passwd
-ENV APP_USER=$APP_USER
 RUN adduser -D $APP_USER \
     && echo $APP_USER_PASSWD && echo "$APP_USER:$APP_USER_PASSWD" | chpasswd  \
     && echo "permit nopass $APP_USER" >> /etc/doas.d/doas.conf
