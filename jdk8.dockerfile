@@ -31,7 +31,9 @@ USER $APP_USER
 
 RUN javac -version && java -version
 
-ONBUILD ARG JAR_FILE=target/app.jar
-ONBUILD COPY ${JAR_FILE} /home/app/app/app.jar
+ONBUILD ARG JAR_RPATH
+ONBUILD RUN test -n "$JAR_RPATH" || (echo "Error: --build-arg JAR_RPATH=target/***.jar is needed but not provided." && exit 128)
+ONBUILD ENV JAR_APATH=/home/app/app/app.jar
+ONBUILD COPY ${JAR_RPATH} ${JAR_APATH}
 
 CMD ["java","-jar","/home/app/app/app.jar"]
